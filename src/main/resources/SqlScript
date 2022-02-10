@@ -1,0 +1,38 @@
+create table ROLE
+(
+ID int primary key auto_increment,
+ROLE_NAME varchar not null unique
+);
+
+create table USER
+(
+ID int primary key auto_increment,
+LOGIN varchar(30) not null unique,
+PASSWORD varchar not null,
+EMAIL varchar not null unique,
+FIRST_NAME varchar(30) not null,
+LAST_NAME varchar(30) not null,
+BAN_DATE date,
+ROLE_ID int,
+foreign key (ROLE_ID) references ROLE (ID) on delete restrict
+);
+
+create table POST
+(
+ID int primary key auto_increment,
+HIDDEN bool default false,
+POST_TEXT varchar not null,
+POST_DATE_TIME datetime default CURRENT_TIMESTAMP,
+USER_ID int,
+foreign key (USER_ID) references USER (ID) on delete cascade
+);
+
+insert into ROLE (ID, ROLE_NAME) values (1, 'ADMIN');
+insert into ROLE (ID, ROLE_NAME) values (2, 'USER');
+
+insert into USER (LOGIN, PASSWORD, EMAIL, FIRST_NAME, LAST_NAME, ROLE_ID) values ('admin', 'admin', 'first.admin@gmail.com', 'first', 'admin', 1);
+insert into USER (LOGIN, PASSWORD, EMAIL, FIRST_NAME, LAST_NAME, ROLE_ID) VALUES ('user', 'user', 'first.user@gmail.com', 'first', 'user', 2);
+insert into USER (LOGIN, PASSWORD, EMAIL, FIRST_NAME, LAST_NAME, ROLE_ID) VALUES ('user2', 'user2', 'second.user@gmail.com', 'second', 'user', 2);
+
+insert into POST (POST_TEXT, POST_DATE_TIME, USER_ID) VALUES ('I was born', '1999-02-04 00:00:00', 1);
+insert into POST (POST_TEXT, POST_DATE_TIME, USER_ID) VALUES ('some text must be here', '2021-11-29 22:10:00', 2);
